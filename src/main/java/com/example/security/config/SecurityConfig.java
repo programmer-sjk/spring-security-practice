@@ -1,5 +1,7 @@
 package com.example.security.config;
 
+import com.example.security.exception.AuthEntryPoint;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,6 +16,12 @@ import static org.springframework.security.config.Customizer.*;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    final AuthEntryPoint authEntryPoint;
+
+    public SecurityConfig(AuthEntryPoint authEntryPoint) {
+        this.authEntryPoint = authEntryPoint;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize
@@ -26,6 +34,8 @@ public class SecurityConfig {
                 )
                 .csrf().disable()
                 .httpBasic(withDefaults())
+                .exceptionHandling()
+                   .authenticationEntryPoint(authEntryPoint).and()
                 .build();
     }
 
