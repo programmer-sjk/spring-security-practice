@@ -15,8 +15,8 @@ public class UserRequest {
     @NotNull
     private Boolean allowMarketing;
 
-    public User toEntity() {
-        return new User(email, password, phone, allowMarketing);
+    public User toEntity(String encryptPassword) {
+        return new User(email, encryptPassword, phone, allowMarketing);
     }
 
     public String getEmail() {

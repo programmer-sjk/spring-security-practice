@@ -2,6 +2,7 @@ package com.example.security.user;
 
 import com.example.security.user.dto.UserRequest;
 import com.example.security.user.dto.UserResponse;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,9 +13,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserResponse> findAll() {
@@ -26,6 +29,7 @@ public class UserService {
 
     @Transactional
     public void signUp(UserRequest request) {
-        userRepository.save(request.toEntity());
+        String encryptPassword = passwordEncoder.encode(request.getPassword());
+        userRepository.save(request.toEntity(encryptPassword));
     }
 }
