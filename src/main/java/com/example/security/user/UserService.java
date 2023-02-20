@@ -17,12 +17,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-//    public List<UserResponse> findAll() {
-//        return userRepository.findAll()
-//                .stream()
-//                .map(UserResponse::new)
-//                .collect(Collectors.toList());
-//    }
+    public List<UserResponse> findAll() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserResponse::new)
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public void signUp(UserRequest request) {

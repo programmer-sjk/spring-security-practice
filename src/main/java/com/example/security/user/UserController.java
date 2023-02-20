@@ -15,10 +15,10 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @GetMapping()
-//    public List<UserResponse> findAll() {
-//        return userService.findAll();
-//    }
+    @GetMapping()
+    public List<UserResponse> findAll() {
+        return userService.findAll();
+    }
 
     @PostMapping()
     public void signUp(@RequestBody UserRequest request) {
