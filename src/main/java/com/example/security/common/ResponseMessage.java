@@ -7,6 +7,10 @@ public class ResponseMessage {
         return new ResponseMessage("인증이 필요합니다.");
     }
 
+    public static ResponseMessage forbidden() {
+        return new ResponseMessage("권한이 필요합니다.");
+    }
+
     private ResponseMessage() {}
 
     private ResponseMessage(String message) {
