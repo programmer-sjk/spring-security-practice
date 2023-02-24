@@ -38,8 +38,8 @@ public class SecurityConfig {
         return http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/")
                             .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/users")
-                            .authenticated()
+                        .requestMatchers(HttpMethod.POST, "/users")
+                            .permitAll()
                         .requestMatchers(HttpMethod.GET, "/health")
                             .permitAll()
                         .anyRequest()
