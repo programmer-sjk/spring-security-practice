@@ -8,6 +8,7 @@ import com.example.security.filter.BeforeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,32 +24,42 @@ import static org.springframework.security.config.Customizer.*;
 public class SecurityConfig {
     private final AuthEntryPoint authEntryPoint;
     private final AccessDenyHandler accessDenyHandler;
-    private final BeforeFilter beforeFilter;
-    private final AfterFilter afterFilter;
 
-    public SecurityConfig(AuthEntryPoint authEntryPoint, AccessDenyHandler accessDenyHandler, BeforeFilter beforeFilter, AfterFilter afterFilter) {
+    public SecurityConfig(AuthEntryPoint authEntryPoint, AccessDenyHandler accessDenyHandler) {
         this.authEntryPoint = authEntryPoint;
         this.accessDenyHandler = accessDenyHandler;
-        this.beforeFilter = beforeFilter;
-        this.afterFilter = afterFilter;
     }
 
     @Bean
+    @Order(1)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(authorize -> authorize
+        return http.securityMatcher("/", "/health")
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/")
-                            .permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users")
                             .permitAll()
                         .requestMatchers(HttpMethod.GET, "/health")
                             .permitAll()
-                        .anyRequest()
-                            .authenticated()
                 )
                 .csrf().disable()
                 .httpBasic(withDefaults())
-                .addFilterBefore(beforeFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(afterFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new BeforeFilter(), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                    .authenticationEntryPoint(authEntryPoint)
+                    .accessDeniedHandler(accessDenyHandler).and()
+                .build();
+    }
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain filterChain2(HttpSecurity http) throws Exception {
+        return http.securityMatcher("/users/**")
+                .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.POST, "/users")
+                    .permitAll()
+                .requestMatchers("/users/**")
+                    .authenticated().and()
+                .csrf().disable()
+                .addFilterAfter(new AfterFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                     .authenticationEntryPoint(authEntryPoint)
                     .accessDeniedHandler(accessDenyHandler).and()
