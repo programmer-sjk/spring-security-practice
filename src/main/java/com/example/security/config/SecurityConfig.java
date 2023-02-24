@@ -5,10 +5,8 @@ import com.example.security.exception.AuthEntryPoint;
 //import com.example.security.filter.AfterFilter;
 import com.example.security.filter.AfterFilter;
 import com.example.security.filter.BeforeFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,8 +29,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Order(1)
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChainBasic(HttpSecurity http) throws Exception {
         return http.securityMatcher("/", "/health")
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/")
@@ -50,8 +47,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Order(2)
-    public SecurityFilterChain filterChain2(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChainJwt(HttpSecurity http) throws Exception {
         return http.securityMatcher("/users/**")
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/users")
