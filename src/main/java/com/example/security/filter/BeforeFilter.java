@@ -1,8 +1,6 @@
 package com.example.security.filter;
 
 import jakarta.servlet.*;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 

@@ -2,7 +2,6 @@ package com.example.security.config;
 
 import com.example.security.exception.AccessDenyHandler;
 import com.example.security.exception.AuthEntryPoint;
-//import com.example.security.filter.AfterFilter;
 import com.example.security.filter.AfterFilter;
 import com.example.security.filter.BeforeFilter;
 import org.springframework.context.annotation.Bean;
