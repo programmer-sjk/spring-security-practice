@@ -31,10 +31,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChainBasic(HttpSecurity http) throws Exception {
         return http.securityMatcher("/", "/health")
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/")
-                            .permitAll()
                         .requestMatchers(HttpMethod.GET, "/health")
                             .permitAll()
+                        .requestMatchers("/")
+                            .authenticated()
                 )
                 .csrf().disable()
                 .httpBasic(withDefaults())
