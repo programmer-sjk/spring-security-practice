@@ -4,10 +4,10 @@ import jakarta.servlet.*;
 
 import java.io.IOException;
 
-public class AfterFilter implements Filter {
+public class JwtTokenFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("after filter");
+        System.out.println("Before Filter");
         chain.doFilter(request, response);
     }
 }

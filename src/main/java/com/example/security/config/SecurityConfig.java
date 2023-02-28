@@ -2,8 +2,8 @@ package com.example.security.config;
 
 import com.example.security.exception.AccessDenyHandler;
 import com.example.security.exception.AuthEntryPoint;
-import com.example.security.filter.AfterFilter;
-import com.example.security.filter.BeforeFilter;
+import com.example.security.filter.BasicAuthFilter;
+import com.example.security.filter.JwtTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -38,7 +38,7 @@ public class SecurityConfig {
                 )
                 .csrf().disable()
                 .httpBasic(withDefaults())
-                .addFilterBefore(new BeforeFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                     .authenticationEntryPoint(authEntryPoint)
                     .accessDeniedHandler(accessDenyHandler).and()
@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .requestMatchers("/users/**")
                     .authenticated().and()
                 .csrf().disable()
-                .addFilterAfter(new AfterFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new BasicAuthFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                     .authenticationEntryPoint(authEntryPoint)
                     .accessDeniedHandler(accessDenyHandler).and()
