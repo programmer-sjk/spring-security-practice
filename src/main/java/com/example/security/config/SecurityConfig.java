@@ -51,6 +51,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/users")
                     .permitAll()
+                .requestMatchers(HttpMethod.GET, "/users/{id}")
+                    .permitAll()
                 .requestMatchers("/users/**")
                     .authenticated().and()
                 .csrf().disable()
