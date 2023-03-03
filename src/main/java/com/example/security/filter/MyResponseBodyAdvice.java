@@ -1,5 +1,6 @@
 package com.example.security.filter;
 
+import com.example.security.common.ResponseMessage;
 import com.example.security.user.domain.User;
 import com.example.security.user.dto.UserResponse;
 import org.springframework.core.MethodParameter;
@@ -19,6 +20,6 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        return new UserResponse((User) body);
+        return ResponseMessage.ok(new UserResponse((User) body));
     }
 }
