@@ -25,10 +25,9 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserResponse find(Long id) {
-        User user = userRepository.findById(id)
+    public User find(Long id) {
+        return userRepository.findById(id)
                 .orElseThrow(IllegalArgumentException::new);
-        return new UserResponse(user);
     }
 
     public List<UserResponse> findAll() {

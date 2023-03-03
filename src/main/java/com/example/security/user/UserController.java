@@ -1,5 +1,6 @@
 package com.example.security.user;
 
+import com.example.security.user.domain.User;
 import com.example.security.user.dto.UserRequest;
 import com.example.security.user.dto.UserResponse;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserResponse find(@PathVariable Long id) {
+    public User find(@PathVariable Long id) {
         return userService.find(id);
     }
 
