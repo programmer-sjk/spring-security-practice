@@ -16,10 +16,10 @@ import java.io.IOException;
 @Component
 public class AuthEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         System.out.println("====AuthEntryPoint commence====");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         final ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(response.getOutputStream(), ResponseMessage.unauthorized());
+        mapper.writeValue(response.getOutputStream(), ResponseMessage.unauthorized(e.getMessage()));
     }
 }
